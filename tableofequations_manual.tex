@@ -1,0 +1,50 @@
+\documentclass{article}
+\usepackage{tableofequations}
+
+\begin{document}
+
+\title{\texttt{tableofequations} package documentation}
+\author{Nathanael Farley}
+\maketitle
+
+\section{Introduction}
+\label{sec:introduction}
+
+This is the documentation for the verb=tableofequations= package. It describes how to make a table of important equations, marked throughout the text with \verb=\markequation= and printed with \verb=\printtableofequations=
+
+\section{Commands}
+\label{sec:commands}
+
+\verb=\markequation= takes two arguments, the first being the equation to mark (i.e.\ the math which will appear in the table).
+\begin{equation}
+  \label{eq:1}
+  e^{i\pi} - 1 = 0
+\end{equation}
+\markequation{e^{i\pi} - 1 = 0}{Euler's Equation}
+
+is created by the code
+\begin{verbatim}
+\begin{equation}
+  \label{eq:1}
+  e^{i\pi} - 1 = 0
+\end{equation}
+\markequation{e^{i\pi} - 1 = 0}{Euler's Equation}
+\end{verbatim}
+
+The second command defined by this package is the \verb=\printtableofequations=, e.g.\ 
+\printtableofequations
+is created by
+\begin{verbatim}
+\printtableofequations
+\end{verbatim}
+
+To redefine the title of table equations simply\\ \verb=\renewcommand{\toeheading}{=\emph{\mbox{your name here}}\verb=}=.
+\section{Additional Notes}
+\label{sec:additional-notes}
+
+There are a couple of caveats of using this package
+\begin{itemize}
+\item The LaTeX file will need to be compiled twice for any changes to appear in the table of equations
+\item The table of equations is actually a collection of \verb=parbox=s arranged like a table. This shouldn't affect anything that I can see, but if you're debugging your file, you should remember that when looking through the errors.
+\end{itemize}
+\end{document}
