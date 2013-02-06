@@ -1,0 +1,23 @@
+\ProvidesPackage{tableofequations}[2013/02/06]
+
+\NeedsTeXFormat{LaTeX2e}
+
+\newcommand\markequation[2]{
+  \parbox{\linewidth}{\itshape\centering #2}\\
+  \write\@auxout{%
+    \noexpand\@writefile{toe}{%
+      \noexpand\parbox{0.5\noexpand\linewidth}{\noexpand\begin{displaymath}#1\noexpand\end{displaymath}}%
+      \noexpand\parbox{0.3\noexpand\linewidth}{#2}%
+      \noexpand\parbox{0.2\noexpand\linewidth}{Page \thepage}
+    }
+  }
+}
+
+\newcommand\toeheading{Table of Equations}
+
+\newcommand\printtableofequations{%
+  \section*{\toeheading}
+    \parbox{0.5\linewidth}{\centering Equation}\parbox{0.3\linewidth}{Description}\parbox{0.2\linewidth}{Page}\\\rule{\linewidth}{1pt}\\
+    \@starttoc{toe}
+}
+
