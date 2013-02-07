@@ -2,25 +2,74 @@
 
 \NeedsTeXFormat{LaTeX2e}
 
-\newcommand\equationlabel[1]{\parbox{\linewidth}{\itshape\centering #1}}
-\newcommand\markequation[2]{
-  \equationlabel{#2}%
-  \write\@auxout{%
-    \noexpand\@writefile{toe}{%
-      \noexpand\parbox{0.5\noexpand\linewidth}{\noexpand\begin{displaymath}#1\noexpand\end{displaymath}}%
-      \noexpand\parbox{0.3\noexpand\linewidth}{#2}%
-      \noexpand\parbox{0.2\noexpand\linewidth}{Page \thepage}
+\RequirePackage{etoolbox}
+\RequirePackage{environ}
+
+%% This package is really mostly made by Saso Zivanovic at http://spj.jj.uni-lj.si/zivanovic from an answer at TeX.SE, I am mostly responsible for just packaging it and maintaining it as best I can.
+
+\AtBeginEnvironment{equation}{%
+  \Collect@Body\rememberequation
+}
+
+
+
+\newtoks\currentequation
+\def\rememberequation#1{%
+  \typeout{DEBUG: \detokenize{#1}}%
+  % #1 starts with \csname equation\endcsname
+  \expandafter\currentequation\expandafter{#1}%
+  \let\eqcaption\storecurrentequation
+  #1%
+}
+
+\def\storecurrentequation#1{%
+  \protected@write\@mainaux{}%
+  {\detokenize{\gappto\listofequations}{%
+      (\theequation)&
+      $\expandafter\detokenize\expandafter{\the\currentequation}$&
+      \detokenize{#1}&% #1 = eqcaption
+      \thepage\\
     }%
   }%
 }
 
-\newcommand\toeheading{Table of Equations}
-
-\newcommand\printtableofequations{%
-  \clearpage
-  \section*{\toeheading}
-    \parbox{0.5\linewidth}{\centering Equation}\parbox{0.3\linewidth}{Description}\parbox{0.2\linewidth}{Page}\\\rule{\linewidth}{1pt}\\
-    \@starttoc{toe}
-    \clearpage
+\newcommand\tableofequations{%
+  \preto\listofequations{%
+    \begin{tabular}{cccc}
+      \#&Equation&Name&Page\\\hline
+    }%
+    \appto\listofequations{%
+      \hline
+    \end{tabular}
+  }%      
+  \begin{center}
+    \let\equation\relax
+    \let\label\@gobble
+    \let\eqcaption\@gobble
+    \listofequations
+  \end{center}
 }
+
+
+% \newcommand\equationlabel[1]{\parbox{\linewidth}{\itshape\centering #1}}
+% \newcommand\markequation[2]{
+%   \equationlabel{#2}%
+%   \write\@auxout{%
+%     \noexpand\@writefile{toe}{%
+%       \noexpand\parbox{0.5\noexpand\linewidth}{\noexpand\begin{displaymath}#1\noexpand\end{displaymath}}%
+%       \noexpand\parbox{0.3\noexpand\linewidth}{#2}%
+%       \noexpand\parbox{0.2\noexpand\linewidth}{Page \thepage}
+%     }%
+%   }%
+% }
+
+% \newcommand\toeheading{Table of Equations}
+
+% \newcommand\printtableofequations{%
+%   \clearpage
+%   \section*{\toeheading}
+%     \parbox{0.5\linewidth}{\centering Equation}\parbox{0.3\linewidth}{Description}\parbox{0.2\linewidth}{Page}\\\rule{\linewidth}{1pt}\\
+%     \@starttoc{toe}
+%     \clearpage
+% }
 
