@@ -50,6 +50,7 @@ To define the style of labels in the text, redefine \verb=\equationlabel=. E.g.
 
 There are a couple of caveats of using this package
 \begin{itemize}
+\item Text/math inside \verb=\markequation= is fragile like a figure caption, so needs \verb=\protect=ing appropriately.
 \item The LaTeX file will need to be compiled twice for any changes to appear in the table of equations
 \item The table of equations is actually a collection of \verb=parbox=s arranged like a table. This shouldn't affect anything that I can see, but if you're debugging your file, you should remember that when looking through the errors.
 \end{itemize}
