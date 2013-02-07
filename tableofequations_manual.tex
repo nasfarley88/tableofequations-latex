@@ -1,5 +1,6 @@
 \documentclass{article}
 \usepackage{tableofequations}
+\usepackage{hyperref}
 
 \begin{document}
 
@@ -21,7 +22,6 @@ This is the documentation for the verb=tableofequations= package. It describes h
   e^{i\pi} - 1 = 0
 \end{equation}
 \markequation{e^{i\pi} - 1 = 0}{Euler's Equation}
-
 is created by the code
 \begin{verbatim}
 \begin{equation}
@@ -31,14 +31,20 @@ is created by the code
 \markequation{e^{i\pi} - 1 = 0}{Euler's Equation}
 \end{verbatim}
 
-The second command defined by this package is the \verb=\printtableofequations=, e.g.\ 
-\printtableofequations
-is created by
+The second command defined by this package is the \verb=\printtableofequations=. Note that this command will always start on a new page, and force a new page when done. This command is demonstrated in section \ref{sec:table-equat-example}.
+
+To redefine the title of table equations use \verb=\renewcommand= on \verb=\toeheading=. E.g.
 \begin{verbatim}
-\printtableofequations
+\renewcommand\toeheading{Equations to Remember}
 \end{verbatim}
 
-To redefine the title of table equations simply\\ \verb=\renewcommand{\toeheading}{=\emph{\mbox{your name here}}\verb=}=.
+To define the style of labels in the text, redefine \verb=\equationlabel=. E.g.
+\begin{verbatim}
+\renewcommand\equationlabel[1]{%
+  \parbox{\linewidth}{\itshape\dotfill#1\dotfill}%
+}
+\end{verbatim}
+
 \section{Additional Notes}
 \label{sec:additional-notes}
 
@@ -47,4 +53,12 @@ There are a couple of caveats of using this package
 \item The LaTeX file will need to be compiled twice for any changes to appear in the table of equations
 \item The table of equations is actually a collection of \verb=parbox=s arranged like a table. This shouldn't affect anything that I can see, but if you're debugging your file, you should remember that when looking through the errors.
 \end{itemize}
+
+\appendix
+
+\section{Table of Equations example}
+\label{sec:table-equat-example}
+The following page is created by the command \verb=\printtableofequations=
+\printtableofequations
+
 \end{document}
